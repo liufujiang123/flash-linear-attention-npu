@@ -194,6 +194,7 @@ ASCENDC_EXTERN_C ge::graphStatus TilingChunkBwdDqkwg(gert::TilingContext* contex
     
     // 设置 block 数量
     context->SetBlockDim(aicNum);
+    context->SetScheduleMode(1); // set as batchmod for template using SyncAll
     
     // 填充 TilingData
     ChunkBwdDqkwgTilingData tilingData;
