@@ -477,7 +477,14 @@ __aicore__ inline void ChunkBwdDqkwgVectorProcess<DataType, GType>::ProcessPart2
             // CopyIn: g
             {
                 auto tensorGIn = inQue3.AllocTensor<GType>();
-                DataCopy(tensorGIn, gmG[gOffset], gSize);
+
+                DataCopyParams dataCopyParams;
+                dataCopyParams.blockCount = 1;
+                dataCopyParams.blockLen = (eos_orig-bos_orig)*sizeof(GType);
+                dataCopyParams.srcStride = 0;
+                dataCopyParams.dstStride = 0;
+                DataCopyPad(tensorGIn, gmG[gOffset],dataCopyParams,{false, 0, 0, 0});
+
                 inQue3.EnQue(tensorGIn);
             }
 
@@ -853,8 +860,14 @@ __aicore__ inline void ChunkBwdDqkwgVectorProcess<DataType, GType>::ProcessPart4
                 DataCopy(tensorDqIn[dqSize_sub], gmDq[qkOffset + dqSize_sub_offset], dqSize_sub);
 
                 DataCopy(tensorQIn[dqSize_sub], gmQ[qkOffset + dqSize_sub_offset], dqSize_sub);
-                DataCopy(tensorGIn, gmG[gOffset], gSize);
-                DataCopy(tensorDgIn, gmDg[gOffset], gSize);
+
+                DataCopyParams dataCopyParams;
+                dataCopyParams.blockCount = 1;
+                dataCopyParams.blockLen = actual_chunk_len*sizeof(GType);
+                dataCopyParams.srcStride = 0;
+                dataCopyParams.dstStride = 0;
+                DataCopyPad(tensorGIn, gmG[gOffset],dataCopyParams,{false, 0, 0, 0});
+                DataCopyPad(tensorDgIn, gmDg[gOffset],dataCopyParams,{false, 0, 0, 0});
 
                 inQue1.EnQue(tensorDqIn);
                 inQue2.EnQue(tensorQIn);
@@ -1037,10 +1050,14 @@ __aicore__ inline void ChunkBwdDqkwgVectorProcess<DataType, GType>::ProcessPart5
                 
                 DataCopy(tensorDkIn[dkSize], gmDk[kOffset], dkSize);
                 DataCopy(tensorKIn[dkSize], gmK[kOffset], dkSize);
-                DataCopy(tensorGIn, gmG[gOffset], gSize);
-                DataCopy(tensorDgIn, gmDg[gOffset], gSize);
-                // DataCopy(tensorDgLastIn, gmDgLast[dgLastOffset], 8); // 只需要最后一个位置的 dg 值
-                // DataCopy(tensorGLastIn, gmG[gOffset + actual_chunk_len - 1], 16); // 只需要最后一个位置的 g 值
+
+                DataCopyParams dataCopyParams;
+                dataCopyParams.blockCount = 1;
+                dataCopyParams.blockLen = actual_chunk_len*sizeof(GType);
+                dataCopyParams.srcStride = 0;
+                dataCopyParams.dstStride = 0;
+                DataCopyPad(tensorGIn, gmG[gOffset],dataCopyParams,{false, 0, 0, 0});
+                DataCopyPad(tensorDgIn, gmDg[gOffset],dataCopyParams,{false, 0, 0, 0});
 
                 inQue1.EnQue(tensorDkIn);
                 inQue2.EnQue(tensorKIn);

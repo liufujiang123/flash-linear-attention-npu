@@ -46,10 +46,10 @@ if __name__ == "__main__":
         [1,32,65536,64,torch.bfloat16,torch.bfloat16,0.32,case_extra_info.pj_cu_seqlens,128,128],  #23 [0,16,128] [0,16,135,512]
         [1,32,65536,128,torch.bfloat16,torch.bfloat16,0.32,case_extra_info.pj_cu_seqlens,128,128],  #24 [0,16,128] [0,16,135,512]
         [2,4,512,128,torch.bfloat16,torch.float32,0.088,None,128,256],  #25 [0,16,128] [0,16,135,512]
-        [1,8,1024,64,torch.bfloat16,torch.float32,0.088, [0, 57, 143, 187, 197, 227],128,128],  #26 [0,16,128] [0,16,135,512]
+        [20,48,848,64,torch.bfloat16,torch.bfloat16,0.088, None,128,128],  #26 [0,16,128] [0,16,135,512]
 
     ]
-    device_id = 4
+    device_id = 5
     
 
     dtype = torch.float16
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         scale = single_case[6]
         K = single_case[8]
         V = single_case[9]
-        V = 256 ########################################手动修改V，测试二阶段用例
+        # V = 256 ########################################手动修改V，测试二阶段用例
 
 
     if isVarLen:
@@ -94,8 +94,8 @@ if __name__ == "__main__":
     
     test_case_name = f"case_{case_name}"
     data_path = "/data/huangjunzhe/GDN/result/result_newg"
-    RANDOM_DATA = True
-    RUN_CPU = True
+    RANDOM_DATA = False
+    RUN_CPU = False
     SAVE_FILES = True
     if SAVE_FILES:
         os.makedirs(f'{data_path}/{test_case_name}/in/', exist_ok=True)
