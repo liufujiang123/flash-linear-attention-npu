@@ -75,8 +75,8 @@ aclnnStatus aclnnChunkBwdDvLocal(
 | `g` | 输入 | 必选 | Gate 输入张量（门控衰减系数） | 参与 gating 计算 | `FLOAT16`、`BFLOAT16`、`FLOAT` | `ND` | `[B, H, T]` | 支持 |
 | `gGammaOptional` | 输入 | 可选 | 预留门控参数输入 | 当前版本不支持，须传 `None` | `FLOAT` | `ND` | - | - |
 | `aOptional` | 输入 | 可选 | 预留参数输入 | 当前版本不支持，须传 `None` | `FLOAT16`、`BFLOAT16` | `ND` | - | - |
-| `cuSeqlensOptional` | 输入 | 可选 | 变长序列的累计长度信息 | 变长模式输入，形如 `[0, T1, T1+T2, ...]`，形状为 `[N+1]` | `INT64` | `ND` | 1 维 | - |
-| `chunkIndicesOptional` | 输入 | 可选 | 分块索引信息 | 变长模式输入，形状为 `[num_chunks, 2]` | `INT64` | `ND` | 2 维 | - |
+| `cuSeqlensOptional` | 输入 | 可选 | 变长序列的累计长度信息 | 变长模式输入，形如 `[0, T1, T1+T2, ...]`，形状为 `[N+1]`（N 为 batch 内序列段数，等于 B） | `INT64` | `ND` | 1 维 | - |
+| `chunkIndicesOptional` | 输入 | 可选 | 分块索引信息 | 变长模式输入，形状为 `[num_chunks, 2]`（num_chunks 为所有序列的总分块数，每行为 `[batch_idx, chunk_idx]`） | `INT64` | `ND` | 2 维 | - |
 
 ### 3.2 属性参数（Attributes）
 
