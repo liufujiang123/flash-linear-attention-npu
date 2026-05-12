@@ -4,7 +4,7 @@ from typing import Optional
 import math
 import random
 import ct
-import aclnn_extension
+import fla_npu
 
 def prepare_lens(cu_seqlens: torch.LongTensor) -> torch.LongTensor:
     return cu_seqlens[1:] - cu_seqlens[:-1]

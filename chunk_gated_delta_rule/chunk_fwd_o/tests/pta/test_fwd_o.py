@@ -10,7 +10,7 @@ from ml_dtypes import bfloat16
 from dataclasses import dataclass
 import math
 # import custom_ops
-import aclnn_extension
+import fla_npu
 
 torch.npu.config.allow_internal_format = False
 torch.npu.set_compile_mode(jit_compile=False)

@@ -2,7 +2,7 @@ import torch
 import torch_npu
 import os
 # import custom_ops
-import aclnn_extension
+import fla_npu
 
 os.environ['TBE_PARALLEL_COMPILE_ENABLE'] = '0'
 os.environ['PARALLEL_COMPILE'] = '0'

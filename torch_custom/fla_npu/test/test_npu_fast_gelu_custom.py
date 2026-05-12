@@ -5,7 +5,7 @@ import torch_npu
 from torch_npu.testing.testcase import TestCase, run_tests
 from torch_npu.testing.common_utils import create_common_tensor
 
-import aclnn_extension
+import fla_npu
 
 
 class TestFastGelu(TestCase):

@@ -118,7 +118,7 @@ def get_link_args():
 # Use CppExtension in PyTorch instead of the standard Extension for better PyTorch adaption
 extensions = [
     CppExtension(
-        "aclnn_extension.custom_aclnn_extension_lib",
+        "fla_npu.custom_aclnn_extension_lib",
         sources=get_sources(),
         include_dirs=get_include_dirs(),
         extra_compile_args=get_compile_args(),
@@ -127,9 +127,9 @@ extensions = [
 ]
 
 setup(
-    name="aclnn_extension",
+    name="fla_npu",
     version="1.0.0",
-    description="ACLNN extension for PyTorch",
+    description="FLA NPU extension for PyTorch",
     ext_modules=extensions,
     cmdclass={
         'build_ext': BuildExtension,

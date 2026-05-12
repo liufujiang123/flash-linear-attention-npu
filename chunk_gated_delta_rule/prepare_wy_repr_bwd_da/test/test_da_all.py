@@ -7,7 +7,7 @@ import pandas as pd
 import re
 import random
 import os
-import aclnn_extension
+import fla_npu
 
 torch.npu.utils.set_device(3)
 

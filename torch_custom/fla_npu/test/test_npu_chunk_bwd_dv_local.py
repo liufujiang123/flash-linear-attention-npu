@@ -6,7 +6,7 @@ import hashlib
 from golden import chunk_bwd_dv_local_fix, chunk_bwd_dv_local_variable, prepare_chunk_indices
 from utils import generate_cu_seqlens, compare_tensors_by_ratio, create_incremental_tensor, create_tensor, bool_matrix_to_uint8, get_tensor_md5, compare_tensors_md5
 import ct
-import aclnn_extension
+import fla_npu
 
 torch.npu.config.allow_internal_format = False
 torch.npu.set_compile_mode(jit_compile=False)

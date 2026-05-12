@@ -4,7 +4,7 @@ import torch
 import torch_npu
 import torch.nn.functional as F
 
-import aclnn_extension
+import fla_npu
 
 
 # CPU golden reference adapted from:

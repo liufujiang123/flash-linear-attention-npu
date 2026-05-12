@@ -6,7 +6,7 @@ import math
 # import ct
 import random
 torch.npu.utils.set_device(4)
-import aclnn_extension
+import fla_npu
 # import custom_ops
 
 torch.npu.config.allow_internal_format = False

@@ -651,7 +651,7 @@ def _main():
     import torch.nn.functional as F
     import torch_npu
 
-    import aclnn_extension  # noqa: F401
+    import fla_npu  # noqa: F401
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=int, default=2)

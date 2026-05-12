@@ -1,7 +1,7 @@
 from chunk_bwd_dqkwg_cpu import *
 import torch
 import torch_npu
-import aclnn_extension
+import fla_npu
 # -------------------------------------------------------------------------
 # 使用示例 / 验证
 # -------------------------------------------------------------------------

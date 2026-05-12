@@ -34,18 +34,18 @@ __pycache__
 MANIFEST.in
 
 # torch_custom build artifacts
-torch_custom/aclnn_extension/aclnn_extension.egg-info/
-torch_custom/aclnn_extension/build/
-torch_custom/aclnn_extension/dist/
-torch_custom/aclnn_extension/npu_native_functions_by_codegen.yaml
-torch_custom/aclnn_extension/op_plugin/AclOpsInterface.h
-torch_custom/aclnn_extension/op_plugin/OpApiInterface.h
-torch_custom/aclnn_extension/op_plugin/OpInterface.cpp
-torch_custom/aclnn_extension/op_plugin/OpInterface.h
-torch_custom/aclnn_extension/op_plugin/SparseOpsInterface.h
-torch_custom/aclnn_extension/op_plugin/config/
-torch_custom/aclnn_extension/op_plugin/ops/opapi/StructKernelNpuOpApi.cpp
-torch_custom/aclnn_extension/torch_npu/
+torch_custom/fla_npu/fla_npu.egg-info/
+torch_custom/fla_npu/build/
+torch_custom/fla_npu/dist/
+torch_custom/fla_npu/npu_native_functions_by_codegen.yaml
+torch_custom/fla_npu/op_plugin/AclOpsInterface.h
+torch_custom/fla_npu/op_plugin/OpApiInterface.h
+torch_custom/fla_npu/op_plugin/OpInterface.cpp
+torch_custom/fla_npu/op_plugin/OpInterface.h
+torch_custom/fla_npu/op_plugin/SparseOpsInterface.h
+torch_custom/fla_npu/op_plugin/config/
+torch_custom/fla_npu/op_plugin/ops/opapi/StructKernelNpuOpApi.cpp
+torch_custom/fla_npu/torch_npu/
 
 #gdn cache
 # third_party：CMake FetchContent / ExternalProject 等在线拉取的依赖目录，不纳入仓库（含 catlass）

@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 from typing import Tuple
 # import custom_ops
-import aclnn_extension
+import fla_npu
 import os
 
 # 当前文件所在目录

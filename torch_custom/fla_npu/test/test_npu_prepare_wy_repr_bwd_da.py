@@ -4,7 +4,7 @@ from typing import Optional
 import math
 # import ct
 import random
-import aclnn_extension
+import fla_npu
 import os
 
 torch.npu.utils.set_device(3)

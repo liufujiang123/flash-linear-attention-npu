@@ -103,7 +103,7 @@ aclnnStatus aclnnChunkGatedDeltaRuleFwdH(
 
 ## 3. 参数说明
 
-参数表与 `torch_custom/aclnn_extension/op_plugin/ops/opapi/FLANpuOpApi.cpp` 中 `npu_chunk_gated_delta_rule_fwd_h` 的算子签名保持一致。
+参数表与 `torch_custom/fla_npu/op_plugin/ops/opapi/FLANpuOpApi.cpp` 中 `npu_chunk_gated_delta_rule_fwd_h` 的算子签名保持一致。
 
 ### 3.1 输入参数（Inputs）
 

@@ -1,4 +1,4 @@
-# aclnn_extension 样例说明
+# fla_npu 样例说明
 
 本样例是 **「自定义算子接入 - 结构化代码生成」** 的示例工程，演示如何通过 YAML 描述 + 代码生成工具，将自定义 aclnn 算子接入 PyTorch NPU 生态，并生成可参与 torch_npu 编译的适配代码。
 
@@ -24,8 +24,8 @@
 
 ### 运行前
 ```
-aclnn_extension/
-├── aclnn_extension/
+fla_npu/
+├── fla_npu/
 │   └── __init__.py                   # 构建用init文件
 ├── deprecated.yaml                   # 废弃api配置
 ├── gen.sh                            # 一键生成脚本：调用 torchnpugen 生成算子适配代码
@@ -42,25 +42,25 @@ aclnn_extension/
 
 ### 运行后
 
-先执行 `gen.sh` 生成适配代码，再执行 `setup.py` 构建后，在 `./dist/`下得到 **`aclnn_extension*.whl`**：
+先执行 `gen.sh` 生成适配代码，再执行 `setup.py` 构建后，在 `./dist/`下得到 **`fla_npu*.whl`**：
 
 ```
-aclnn_extension/
+fla_npu/
 ├── ...         # 运行前已有文件保持不变
 ├── build/      # gen.sh生成的中间产物
 ├── op_plugin/  # gen.sh生成的中间产物
 ├── torch_npu/  # gen.sh生成的中间产物
 ├── dist/
-│   └── aclnn_extension*.whl # 最终生成的whl包
+│   └── fla_npu*.whl # 最终生成的whl包
 └── ...
 ```
 
-使用方式：`pip install aclnn_extension*.whl` 安装后，即可在 Python 中调用本样例接入的自定义算子（如 `torch.ops.npu.npu_fast_gelu_custom`）。
+使用方式：`pip install fla_npu*.whl` 安装后，即可在 Python 中调用本样例接入的自定义算子（如 `torch.ops.npu.npu_fast_gelu_custom`）。
 
 
 ## 一键运行样例
 
-若仅想快速跑通本样例（不修改算子），在 `aclnn_extension` 目录下**按顺序**执行：
+若仅想快速跑通本样例（不修改算子），在 `fla_npu` 目录下**按顺序**执行：
 
 ```bash
 # 1. 先执行 gen.sh，生成适配代码
@@ -69,7 +69,7 @@ bash gen.sh npu_custom.yaml
 # 2. 再执行 setup.py 构建 whl 包并安装
 python setup.py bdist_wheel
 cd dist
-pip install aclnn_extension*.whl --force-reinstall --no-deps
+pip install fla_npu*.whl --force-reinstall --no-deps
 
 # 3. 运行测试验证
 cd ..
@@ -115,7 +115,7 @@ custom:
 
 ### 2. 执行代码生成
 
-在 `aclnn_extension` 目录下执行：
+在 `fla_npu` 目录下执行：
 
 ```bash
 bash gen.sh npu_custom.yaml
@@ -125,12 +125,12 @@ bash gen.sh npu_custom.yaml
 
 ### 4. 构建 whl 包并运行测试
 
-在步骤 3 完成（gen.sh 已执行）后，再执行 `setup.py` 构建，在 `./dist/`下得到 **`aclnn_extension*.whl`**：
+在步骤 3 完成（gen.sh 已执行）后，再执行 `setup.py` 构建，在 `./dist/`下得到 **`fla_npu*.whl`**：
 
 ```bash
 python setup.py bdist_wheel
 cd dist
-pip install aclnn_extension*.whl
+pip install fla_npu*.whl
 ```
 
 安装完成后即可在代码中调用接入的自定义算子（如 `torch_npu.npu_fast_gelu_custom`）。例如用样例自带的测试用例验证：
@@ -142,7 +142,7 @@ python test_npu_fast_gelu_custom.py
 
 测试通过即说明算子已正确接入、结果与参考实现一致。
 
-注意运行测试脚本时不能在`aclnn_extension` 目录下执行，会受init文件所在同名路径影响。
+注意运行测试脚本时不能在`fla_npu` 目录下执行，会受init文件所在同名路径影响。
 
 ## 自用时的替换与扩展
 
@@ -152,7 +152,7 @@ python test_npu_fast_gelu_custom.py
 - **gen.sh 参数**：若使用新文件名（如 `my_op.yaml`），则执行 `bash gen.sh my_op.yaml` 或 `bash gen.sh my_op.yaml`。
 - **测试脚本**：在 `test/` 下修改或新增测试，调用你暴露的算子名做数值验证。
 
-流程不变：先执行 `gen.sh`（传入你的 YAML），再执行 `setup.py` 构建得到 `aclnn_extension*.whl`，`pip install` 后即可调用。
+流程不变：先执行 `gen.sh`（传入你的 YAML），再执行 `setup.py` 构建得到 `fla_npu*.whl`，`pip install` 后即可调用。
 
 ## gen.sh 结构与代码生成指令说明
 
@@ -162,7 +162,7 @@ python test_npu_fast_gelu_custom.py
 
 - **入参**：`gen.sh` 接收两个参数（第二个可选）。
   - `$1`：算子 YAML 文件（必填），如 `npu_custom.yaml`。
-- **工作目录**：脚本会 `cd` 到自身所在目录（`aclnn_extension/`），后续路径均相对该目录。
+- **工作目录**：脚本会 `cd` 到自身所在目录（`fla_npu/`），后续路径均相对该目录。
 - **版本与目录名**：从当前环境的 `torch.__version__` 解析出 `PYTORCH_VERSION`（如 `2.7.0`），并得到目录后缀 `PYTORCH_VERSION_DIR`（如 `v2r7`），用于 `op_plugin/config/v2r7/` 等路径。
 - **环境变量**：脚本会设置并 `export`：
   - `PYTORCH_VERSION`：PyTorch 版本号。
@@ -198,5 +198,5 @@ python test_npu_fast_gelu_custom.py
 ## 小结
 
 - **适用**：自定义 aclnn 算子、语义与 ATen 对齐、适配层仅做 output 申请的结构化场景。  
-- **执行流程**：先执行 `gen.sh npu_custom.yaml` 生成适配代码，再执行 `setup.py` 构建得到 `aclnn_extension*.whl`，`pip install` 后即可调用接入的算子。  
+- **执行流程**：先执行 `gen.sh npu_custom.yaml` 生成适配代码，再执行 `setup.py` 构建得到 `fla_npu*.whl`，`pip install` 后即可调用接入的算子。  
 - **自用**：把 YAML 里的内容换成自己算子的定义，gen.sh 传入对应 YAML 文件名，同样先 gen.sh 再 setup.py 即可。
