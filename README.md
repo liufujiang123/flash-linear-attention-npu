@@ -8,25 +8,90 @@
 
 flash-linear-attention-npu 算子库由天津大学主导开发，是一个面向昇腾架构的高性能线性注意力算子库，对标 Flash-Linear-Attention 项目，旨在为昇腾平台提供高效的线性注意力计算实现。
 
-## ⚡️快速入门
+## ⚡️快速上手
 
-若您希望快速体验算子的调用和开发过程，请访问如下文档获取简易教程。
+### ​CANN 开发环境部署
 
-- [算子列表](docs/zh/op_list.md)：介绍项目提供的全量算子信息，方便快速查询。
-- [环境部署](docs/zh/context/quick_install.md)：介绍项目基础环境的搭建，包括软件包和第三方依赖的获取和安装。
-- [算子调用](docs/zh/invocation/quick_op_invocation.md)：环境部署后，介绍如何快速调用算子，包括编译执行算子包和UT等。
+首先需安装 CANN 开发包，提供 NPU 算子运行所需的底层驱动与工具链。
+推荐使用是社区版8.5.2，总共要下2个run包，这里以A3机器为例（即需要下载A3-ops、toolkit）
+下载地址为
+[https://www.hiascend.com/developer/download/community/result?module=cann&cann=8.5.2](https://www.hiascend.com/developer/download/community/result?module=cann&cann=8.5.2)
+需要找到与你当前机器对应的包
 
-## 📖学习教程
+```
+#设置需要安装的路径
+export INSTALL_PATH=/usr/local/Ascend
 
-若您希望深入体验项目功能并修改算子源码，请访问如下文档获取详细教程。
-- [算子调用方式](docs/zh/invocation/op_invocation.md)：介绍不同的调用算子方式，方便快速应用于不同的AI业务场景。
+./Ascend-cann-toolkit*run --install-path=$INSTALL_PATH --full  --quiet
+./Ascend-cann-A3*run --install-path=$INSTALL_PATH --install --quiet
+source $INSTALL_PATH/ascend-toolkit/set_env.sh
+```
+
+### 编译自定义算子包
+
+编译GDN算子run包并安装
+
+```
+# 编译命令，注意 --soc=${soc_version} 需指定为当前机器芯片类型 {ascend910b/ascend910_93/ascend950}
+bash build.sh --soc=ascend910_93 --pkg --vendor_name=fla_npu
+
+# 安装 run 包（custom 包名：fla-npu-<vendor>_linux-<arch>.run）
+./build_out/fla-npu-*.run
+```
+
+### ​torch_custom 框架编译构建
+
+下载并安装对应python和torch版本的最新发行版[Ascend Extension for PyTorch](https://gitcode.com/Ascend/pytorch)
+
+
+编译torch适配whl包并安装
+```sh
+cd torch_custom/fla_npu
+bash build.sh  # 一键编译安装脚本，先调用torchnpugen自动接入算子，再运行setup编whl包，最后安装whl包
+```
+
+### 测试单算子
+
+```sh
+# 运行测试
+cd torch_custom/fla_npu/test
+bash test.sh  # 包含所有GDN单算子的一键测试脚本
+```
+
+
+### 算子调用方式参考
+
+使用torch.ops.npu.npu_{算子名称}()调用对应算子，具体可参考torch_custom/fla_npu/test下面的对应算子测试脚本
+
+例如：
+
+```python
+import torch
+import torch_npu
+import fla_npu
+
+torch.ops.npu.npu_chunk_bwd_dv_local(...)
+```
+
+### 接入实践
+
+环境准备：[triton-ascend](https://gitcode.com/Ascend/triton-ascend)包安装，可以使用以下命令安装
+```sh
+pip install triton-ascend
+```
+
+一键运行GDN模块，组装了所有GDN相关算子，包括前向和反向，包括AscendC和Triton算子
+```sh
+python examples/flash_gated_delta_rule.py
+```
 
 ## 🔍目录结构
-关键目录如下，详细目录介绍参见[项目目录](./docs/zh/context/dir_structure.md)。
+关键目录如下：
 ```
 ├── cmake                              # 项目工程编译目录
 ├── common                             # 项目公共头文件和公共源码
 ├── chunk_gated_delta_rule             # Chunk Gated Delta Rule训练算子
+│   ├── causal_conv1d                  # conv1d fn/update 算子
 │   ├── chunk_bwd_dqkwg                # 反向传播dq/dk/dw/dg算子
 │   ├── chunk_bwd_dv_local             # 反向传播dv局部计算算子
 │   ├── chunk_fwd_o                    # 前向传播输出o算子
@@ -35,24 +100,22 @@ flash-linear-attention-npu 算子库由天津大学主导开发，是一个面�
 │   ├── common                         # chunk算子公共模块
 │   ├── prepare_wy_repr_bwd_da         # WY表示反向传播da算子
 │   ├── prepare_wy_repr_bwd_full       # WY表示完整反向传播算子
+│   ├── recompute_wu_fwd               # 重新计算wu前向算子
+│   ├── recurrent_gated_delta_rule     # Recurrent Gated Delta Rule推理算子
 │   └── CMakeLists.txt
-├── recurrent_gated_delta_rule         # Recurrent Gated Delta Rule推理算子
-│   ├── op_host                        # 算子信息库、Tiling相关实现
-│   ├── op_kernel                      # 算子Kernel目录
-│   ├── docs                           # 算子说明文档
-│   ├── examples                       # 算子使用示例
-│   ├── tests                          # 算子测试目录
-│   └── README.md
-├── op-plugin                          # PyTorch算子插件
-├── torch_custom                       # 自定义PyTorch算子
-├── docs                               # 项目文档介绍
+├── torch_custom                       # 自定义PyTorch算子适配
 ├── examples                           # 端到端算子开发和调用示例
+│   └── flash_gated_delta_rule.py      # 完整GDN接入调用示例
 ├── scripts                            # 脚本目录，包含算子构建相关配置文件
 ├── tests                              # 测试工程目录
 ├── CMakeLists.txt
 ├── README.md
 ├── build.sh                           # 项目工程编译脚本
 ├── install_deps.sh                    # 安装依赖包脚本
+├── QUICKSTART.md                      # 快速入门文档
+├── CONTRIBUTING.md                    # 贡献指南
+├── SECURITY.md                        # 安全声明
+├── LICENSE                            # 许可证
 └── requirements.txt                   # 本项目需要的第三方依赖包
 ```
 

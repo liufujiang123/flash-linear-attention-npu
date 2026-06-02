@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Huawei Technologies Co., Ltd.
+# Copyright (c) 2025 Tianjin University, Ltd.
 # This program is free software, you can redistribute it and/or modify it under the terms and conditions of
-# CANN Open Software License Agreement Version 2.0 (the "License").
 # Please refer to the License for details. You may not use this file except in compliance with the License.
 # THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED,
 # INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
@@ -38,7 +37,14 @@ get_filename_component(OPS_ADV_DIR                  "${CMAKE_CURRENT_SOURCE_DIR}
 get_filename_component(OPS_ADV_CMAKE_DIR            "${OPS_ADV_DIR}/cmake"                  REALPATH)
 # get_filename_component(OPS_ADV_UTILS_KERNEL_INC     "${OPS_ADV_DIR}/common/include/kernel"   REALPATH)
 get_filename_component(OPS_ADV_UTILS_KERNEL_INC     "${OPS_ADV_DIR}/chunk_gated_delta_rule/common/"   REALPATH)
-
+# 三方 Catlass：OPS_ADV_CATLASS_INC 由 cmake/third_party/catlass.cmake（FetchContent）在 include(config) 之前设置
+if(NOT OPS_ADV_CATLASS_INC)
+    message(FATAL_ERROR "OPS_ADV_CATLASS_INC 未设置：请在 CMakeLists.txt 中于 config.cmake 之前 include(cmake/third_party/catlass.cmake)。")
+endif ()
+get_filename_component(OPS_ADV_CATLASS_INC "${OPS_ADV_CATLASS_INC}" REALPATH)
+if (NOT EXISTS "${OPS_ADV_CATLASS_INC}/catlass/catlass.hpp")
+    message(FATAL_ERROR "Catlass 头文件不可用：${OPS_ADV_CATLASS_INC}/catlass/catlass.hpp。请检查 cmake/third_party/catlass.cmake 拉取是否成功。")
+endif ()
 
 #   构建树相关路径
 set(ASCEND_IMPL_OUT_DIR           ${CMAKE_CURRENT_BINARY_DIR}/impl                     CACHE   STRING "ascend impl output directories")

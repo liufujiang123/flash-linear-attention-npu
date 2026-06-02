@@ -3,7 +3,7 @@ import torch_npu
 from typing import Optional, Tuple, List
 import random
 import ct
-import aclnn_extension
+import fla_npu
 
 def prepare_chunk_indices(cu_seqlens, chunk_size=64):
     """chunk indices生成函数(chunk_idx从0开始)"""

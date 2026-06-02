@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Huawei Technologies Co., Ltd.
+# Copyright (c) 2025 Tianjin University, Ltd.
 # This program is free software, you can redistribute it and/or modify it under the terms and conditions of
-# CANN Open Software License Agreement Version 2.0 (the "License").
 # Please refer to the License for details. You may not use this file except in compliance with the License.
 # THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED,
 # INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
@@ -231,9 +230,11 @@ function(compile_from_config)
   if(NOT TARGET binary)
     add_custom_target(binary)
   endif()
+  # Copy full op_kernel tree (kernels may ship catlass/... under op_kernel; cp *.* skips directories).
   add_custom_target(${CONFCMP_TARGET}
-    COMMAND cp -r ${CONFCMP_IMPL_DIR}/*.* ${CONFCMP_OUT_DIR}/src
-    COMMAND cp ${CONFCMP_OP_PYTHON_DIR}/${CONFCMP_OP_NAME}.py ${CONFCMP_OUT_DIR}/src
+    COMMAND ${CMAKE_COMMAND} -E rm -rf ${CONFCMP_OUT_DIR}/src/${CONFCMP_OP_NAME}/op_kernel
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CONFCMP_IMPL_DIR} ${CONFCMP_OUT_DIR}/src/${CONFCMP_OP_NAME}/op_kernel
+    COMMAND ${CMAKE_COMMAND} -E copy ${CONFCMP_OP_PYTHON_DIR}/${CONFCMP_OP_NAME}.py ${CONFCMP_OUT_DIR}/src/${CONFCMP_OP_NAME}/
   )
   add_dependencies(binary config_compile_${CONFCMP_COMPUTE_UNIT}_${CONFCMP_OP_NAME} ${CONFCMP_TARGET})
 

@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Huawei Technologies Co., Ltd.
+# Copyright (c) 2025 Tianjin University, Ltd.
 # This program is free software, you can redistribute it and/or modify it under the terms and conditions of
-# CANN Open Software License Agreement Version 2.0 (the "License").
 # Please refer to the License for details. You may not use this file except in compliance with the License.
 # THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED,
 # INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
@@ -942,6 +941,9 @@ foreach (_op_name ${OP_LIST})
     )
 endforeach ()
 
+install(DIRECTORY ${OPS_ADV_CATLASS_INC}/
+        DESTINATION ${IMPL_INSTALL_DIR}/ascendc/common
+)
 install(DIRECTORY ${OPS_ADV_UTILS_KERNEL_INC}/
         DESTINATION ${IMPL_INSTALL_DIR}/ascendc/common
 )
@@ -1073,7 +1075,7 @@ if (NOT ENABLE_BUILT_IN AND BUILD_OPEN_PROJECT)
     set(CPACK_PACKAGE_DESCRIPTION "CPack ops project")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CPack ops project")
     set(CPACK_PACKAGE_DIRECTORY ${CMAKE_BINARY_DIR})
-    set(CPACK_PACKAGE_FILE_NAME "cann-ops-transformer-${VENDOR_NAME}_linux-${ARCH}.run")
+    set(CPACK_PACKAGE_FILE_NAME "fla-npu-${VENDOR_NAME}_linux-${ARCH}.run")
     set(CPACK_GENERATOR External)
     set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
     set(CPACK_EXTERNAL_ENABLE_STAGING TRUE)

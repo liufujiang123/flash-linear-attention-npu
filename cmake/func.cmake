@@ -1,7 +1,6 @@
 # -----------------------------------------------------------------------------------------------------------
-# Copyright (c) 2025 Huawei Technologies Co., Ltd.
+# Copyright (c) 2025 Tianjin University, Ltd.
 # This program is free software, you can redistribute it and/or modify it under the terms and conditions of
-# CANN Open Software License Agreement Version 2.0 (the "License").
 # Please refer to the License for details. You may not use this file except in compliance with the License.
 # THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED,
 # INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
@@ -365,12 +364,14 @@ function(add_ops_src_copy)
     cmake_parse_arguments(SRC_COPY "" "TARGET_NAME;SRC;DST;BE_RELIED;COMPUTE_UNIT" "" ${ARGN})
 
     set(OPS_UTILS_INC_KERNEL_TARGET ops_utils_inc_kernel_${SRC_COPY_COMPUTE_UNIT})
-    if (EXISTS ${OPS_ADV_UTILS_KERNEL_INC})
+    if (EXISTS ${OPS_ADV_UTILS_KERNEL_INC} AND EXISTS ${OPS_ADV_CATLASS_INC})
         if (NOT TARGET ${OPS_UTILS_INC_KERNEL_TARGET})
             get_filename_component(_ROOT_OPS_SRC_DIR    "${SRC_COPY_DST}" DIRECTORY)
             set(OPS_UTILS_INC_KERNEL_DIR ${_ROOT_OPS_SRC_DIR}/ascendc/common)
             add_custom_command(OUTPUT ${OPS_UTILS_INC_KERNEL_DIR}
                     COMMAND mkdir -p ${OPS_UTILS_INC_KERNEL_DIR}/regbase
+                    COMMAND ${CMAKE_COMMAND} -E rm -rf ${OPS_UTILS_INC_KERNEL_DIR}/catlass ${OPS_UTILS_INC_KERNEL_DIR}/tla
+                    COMMAND cp -rf ${OPS_ADV_CATLASS_INC}/* ${OPS_UTILS_INC_KERNEL_DIR}
                     COMMAND cp -rf ${OPS_ADV_UTILS_KERNEL_INC}/* ${OPS_UTILS_INC_KERNEL_DIR}
             )
 

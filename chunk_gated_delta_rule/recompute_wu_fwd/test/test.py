@@ -5,7 +5,7 @@ import pickle
 import math
 import ct
 import random
-import aclnn_extension
+import fla_npu
 torch.npu.utils.set_device(3)
 
 def get_bos_eos(idx, T, chunk_size, cu_seqlens, chunk_indices):

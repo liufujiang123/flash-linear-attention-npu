@@ -11,7 +11,7 @@ from dataclasses import dataclass
 import math
 import shutil
 from typing import Optional
-import aclnn_extension
+import fla_npu
 np.random.seed(1)
 torch.manual_seed(1)
 

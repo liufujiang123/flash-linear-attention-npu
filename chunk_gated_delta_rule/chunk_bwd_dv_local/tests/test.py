@@ -4,7 +4,7 @@ from typing import Optional
 import math
 import random
 import ct
-import aclnn_extension
+import fla_npu
 
 def prepare_lens(cu_seqlens: torch.LongTensor) -> torch.LongTensor:
     return cu_seqlens[1:] - cu_seqlens[:-1]
@@ -298,6 +298,9 @@ def test_chunk_bwd_dv_local_variable(
 if __name__ == "__main__":
     # Fix length tests
     test_chunk_bwd_dv_local_fix(B=2, H=2, T=65, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.float16, gtype=torch.float16)
+    test_chunk_bwd_dv_local_fix(B=2, H=2, T=65, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.bfloat16, gtype=torch.bfloat16)
+    test_chunk_bwd_dv_local_fix(B=2, H=2, T=65, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.bfloat16, gtype=torch.float32)
+    test_chunk_bwd_dv_local_fix(B=2, H=2, T=65, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.float16, gtype=torch.float32)
     test_chunk_bwd_dv_local_fix(B=4, H=4, T=128, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.float16, gtype=torch.float32)
     test_chunk_bwd_dv_local_fix(B=8, H=8, T=256, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.float16, gtype=torch.float16)
     test_chunk_bwd_dv_local_fix(B=16, H=16, T=512, K=128, V=128, chunk_size=64, scale=0.0625, ktype=torch.float16, gtype=torch.float16)
@@ -307,5 +310,8 @@ if __name__ == "__main__":
     test_chunk_bwd_dv_local_variable(B=1, H=32, T=128, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=2, ktype=torch.float16, gtype=torch.float16)
     test_chunk_bwd_dv_local_variable(B=1, H=16, T=256, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=3, ktype=torch.float16, gtype=torch.float32)
     test_chunk_bwd_dv_local_variable(B=1, H=8, T=512, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=4, ktype=torch.float16, gtype=torch.float16)
-    test_chunk_bwd_dv_local_variable(B=1, H=4, T=1024, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=5, ktype=torch.float16, gtype=torch.float16)
+    test_chunk_bwd_dv_local_variable(B=1, H=2, T=64, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=2, ktype=torch.float16, gtype=torch.float16)
+    test_chunk_bwd_dv_local_variable(B=1, H=2, T=64, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=2, ktype=torch.bfloat16, gtype=torch.bfloat16)
+    test_chunk_bwd_dv_local_variable(B=1, H=2, T=64, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=2, ktype=torch.bfloat16, gtype=torch.float32)
+    test_chunk_bwd_dv_local_variable(B=1, H=2, T=64, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=2, ktype=torch.float16, gtype=torch.float32)
     test_chunk_bwd_dv_local_variable(B=1, H=32, T=2048, K=128, V=128, chunk_size=64, scale=0.011, cu_seqlens_len=8, ktype=torch.float16, gtype=torch.float16)
